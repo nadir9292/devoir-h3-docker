@@ -1,0 +1,28 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_CLIENT=pg
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=quizz
+      - SECURITY_ITERATION=10000
+      - SECURITY_NUMBERBYTES=32
+      - SECURITY_FORMATHASH=sha512
+      - SECURITY_SECRET=popo
+    depends_on:
+      - db
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: quizz
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  db-data:
