@@ -36,11 +36,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and Tag Docker Image
         run: |
-          docker build -t my-docker-username/my-docker-image:${{ github.sha }} .
-          docker tag my-docker-username/my-docker-image:${{ github.sha }} my-docker-username/my-docker-image:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-docker-image:${{ github.sha }} .
+          docker tag ${{ secrets.DOCKER_USERNAME }}/my-docker-image:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/my-docker-image:latest
       - name: Push Docker Image
         run: |
-          docker push my-docker-username/my-docker-image:${{ github.sha }}
-          docker push my-docker-username/my-docker-image:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-docker-image:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-docker-image:latest
       - name: Start Docker Compose
         run: docker-compose up --build -d
