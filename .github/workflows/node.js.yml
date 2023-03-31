@@ -28,5 +28,19 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm test
+      - name: Docker Login
+        uses: docker/login-action@v1
+        with:
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and Tag Docker Image
+        run: |
+          docker build -t my-docker-username/my-docker-image:${{ github.sha }} .
+          docker tag my-docker-username/my-docker-image:${{ github.sha }} my-docker-username/my-docker-image:latest
+      - name: Push Docker Image
+        run: |
+          docker push my-docker-username/my-docker-image:${{ github.sha }}
+          docker push my-docker-username/my-docker-image:latest
       - name: Start Docker Compose
         run: docker-compose up --build -d
