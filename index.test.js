@@ -17,6 +17,6 @@ describe("Test of the Express application", () => {
   it("Checking the listening port", async () => {
     const response = await request(app).get("/")
     expect(response.status).toBe(200)
-    expect(response.text).toEqual("OK test")
+    expect(response.text).toEqual("OK")
   })
 })
